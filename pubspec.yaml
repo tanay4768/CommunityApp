@@ -45,6 +45,9 @@ dependencies:
   cloudinary_api: ^1.0.0
   cloudinary_url_gen: ^1.0.0
   flutter_dotenv: ^5.2.1
+  cloud_firestore: ^5.5.1
+  hive_flutter: ^1.1.0
+  get_storage: ^2.1.1
 
 
 dev_dependencies:
@@ -73,6 +76,7 @@ flutter:
   assets:
     - .env
     - assets/images/hackshashlogo.jpg
+    - assets/images/sendmail.png
     - assets/images/loginpage.jpg
     - assets/images/profile.jpg
 

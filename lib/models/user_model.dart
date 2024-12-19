@@ -1,3 +1,4 @@
+
 class UserModel {
   String? username;
   String? avatar;
@@ -12,3 +13,4 @@ class UserModel {
     email = value['email'];
   }
 }
+

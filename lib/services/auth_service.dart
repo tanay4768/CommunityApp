@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communityapp/models/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+
 
 FirebaseDatabase database = FirebaseDatabase.instance;
 DatabaseReference databaseReference = FirebaseDatabase.instance.ref('users');
@@ -57,15 +61,18 @@ class AuthService {
 
   static updateInfo(String username, String github, String avatar,
       String linkedin, String name) async {
+    final db = FirebaseFirestore.instance.collection("users");
     Map<String, dynamic> userObject = {
       'name': name,
       'avatarlink': avatar,
       'github': github,
       'linkedin': linkedin,
+      'joinedGroups': {"-OESi5kZTsOfRXoZHNRV": 0, "-OEToTo5IIB0pk8z4sSn": 0}
     };
+    db.doc(username).set(userObject);
     databaseReference.child(username).update(userObject);
   }
-   
+
   static Future<bool> validateInputs(String username, String email,
       String password, BuildContext context) async {
     List users = await getUsersList();
@@ -125,7 +132,7 @@ class AuthService {
 
       if (snapshot.exists) {
         Map<dynamic, dynamic> usersMap =
-        snapshot.value as Map<dynamic, dynamic>;
+            snapshot.value as Map<dynamic, dynamic>;
 
         // Iterate through usersMap
         for (var entry in usersMap.entries) {
@@ -143,7 +150,6 @@ class AuthService {
     // Return "Not found" if the email is not matched
     return "Not found";
   }
-
 
   static Future<List<String>> getEmailsList() async {
     List<String> emailsList = [];
@@ -197,10 +203,12 @@ class AuthService {
   }
 
   static Future<UserModel> saveUser(String username) async {
-    final event = await databaseReference.child(username).once();
-    final snapshot = event.snapshot;
-    if (snapshot.exists) {
-      Map<dynamic, dynamic> usersMap = snapshot.value as Map<dynamic, dynamic>;
+    final db = FirebaseFirestore.instance.collection("users").doc(username);
+    final doc = await db.get();
+    final box = GetStorage();
+    box.write('username', username);
+    if (doc.exists) {
+      Map<String, dynamic> usersMap = doc.data() as Map<String, dynamic>;
       UserModel usr = UserModel.fromJson(usersMap, username);
       return usr;
     }
@@ -232,7 +240,7 @@ class AuthService {
         final credential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         String username = await getUsername(email);
-        usr = await AuthService.saveUser(email);
+        usr = await AuthService.saveUser(username);
         return usr;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {

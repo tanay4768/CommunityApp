@@ -1,10 +1,8 @@
 import 'package:communityapp/controllers/auth_controller.dart';
 import 'package:communityapp/models/user_model.dart';
 import 'package:communityapp/services/auth_service.dart';
-import 'package:communityapp/widgets/custom_widgets.dart';
-import 'package:communityapp/views/auth/register_view.dart';
+import 'package:communityapp/views/chat/groups_view.dart';
 import 'package:communityapp/views/auth/signup_view.dart';
-import 'package:communityapp/views/home/home_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -134,7 +132,7 @@ class _StateSigninView extends State<LoginView> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                   MainView()));
+                                  GroupsView()));
                         }
                       },
                       style: ButtonStyle(

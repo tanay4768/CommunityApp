@@ -87,12 +87,11 @@ class _StateRegisterView extends State<RegisterView> {
               const SizedBox(
                 height: 80,
               ),
-              Obx(
-                () => GestureDetector(
+               GestureDetector(
                   onTap: () async {
                     _pickImage(ImageSource.gallery);
                   },
-                  child: Container(
+                  child:Obx(() => Container(
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
@@ -110,9 +109,9 @@ class _StateRegisterView extends State<RegisterView> {
                             size: 50,
                           )
                         : null,
-                  ),
+                  ),)
                 ),
-              ),
+              
               const SizedBox(
                 height: 50,
               ),
